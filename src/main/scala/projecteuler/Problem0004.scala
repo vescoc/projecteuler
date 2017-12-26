@@ -2,19 +2,10 @@ package projecteuler
 
 import scala.annotation.tailrec
 
+import intmath._
+
 object Problem0004 {
   def solve(n: Int) = {
-    def pow(n: Int, e: Int): Int = {
-      @tailrec
-      def p(current: Int = 1, e: Int = e): Int =
-        if (e == 0)
-          current
-        else
-          p(current * n, e - 1)
-
-      p()
-    }
-
     val m = pow(10, n)
     val l = pow(10, n - 1)
 

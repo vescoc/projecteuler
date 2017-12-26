@@ -5,14 +5,26 @@ import scala.annotation.tailrec
 trait IntMathTrait {
   lazy val prime: Stream[Int] = 1 #:: 2 #:: {
     def next(n: Int, current: Int): Stream[Int] = {
-      val l = prime.tail.take(n - 1).toList
-
       @tailrec
-      def find(current: Int = current + 1): Int =
-        if (l.forall(d => current % d != 0))
+      def find(current: Int = current + 1): Int = {
+        val half = current / 2
+
+        @tailrec
+        def check(s: Stream[Int] = prime.tail): Boolean = {
+          val head = s.head
+          if (head > half)
+            true
+          else if (current % head == 0)
+            false
+          else
+            check(s.tail)
+        }
+
+        if (check())
           current
         else
           find(current + 1)
+      }
 
       val p = find()
 

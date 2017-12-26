@@ -42,17 +42,19 @@ trait IntMathTrait {
     factor()
   }
 
-  def pow(n: Int, e: Int) = {
+  def pow[T : Numeric](n: T, e: Int) = {
+    val numerics = implicitly[Numeric[T]]
+
     @tailrec
-    def p(current: Int = 1, e: Int = e): Int =
+    def p(current: T = numerics.one, e: Int = e): T =
       if (e <= 0)
         current
       else
-        p(current * n, e - 1)
+        p(numerics.times(current, n), e - 1)
 
     p()
   }
-
+  
   def mcm(numbers: Seq[Int]) = {
     @tailrec
     def mcm(numbers: Seq[Int] = numbers, current: Map[Int, Int] = Map()): Map[Int, Int] =

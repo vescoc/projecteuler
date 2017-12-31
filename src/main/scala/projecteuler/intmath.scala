@@ -116,6 +116,28 @@ trait IntMathTrait {
 
     mcm().foldLeft(numeric.one)((r, c) => numeric.times(r, pow(c._1, c._2)))
   }
+
+  def divisors[T : Integral](n: T)(implicit m: Manifest[T]) = {
+    val numeric = implicitly[Integral[T]]
+
+    val zero = numeric.zero
+    val one = numeric.one
+    val two = numeric.plus(one, one)
+
+    val half = numeric.quot(n, two)
+
+    @tailrec
+    def next(d: T = one, current: Set[T] = Set()): Set[T] = {
+      if (numeric.gt(d, half))
+        current + n
+      else if (numeric.equiv(numeric.rem(n, d), zero))
+        next(numeric.plus(d, one), current + d)
+      else
+        next(numeric.plus(d, one), current)
+    }
+
+    next()
+  }
 }
 
 object intmath extends IntMathTrait
